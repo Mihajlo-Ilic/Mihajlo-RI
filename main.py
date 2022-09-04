@@ -1,11 +1,12 @@
 import math
 from os import path
+from time import process_time
 import pandas as pd
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
 
-MAX_RANDOM = 300
+MAX_RANDOM = 100
 MAX_ITER = 1000
 USE_LOGGING = False
 FLOAT_ROUND = 2
@@ -128,6 +129,7 @@ def bruteForce(data: pd.DataFrame, k, metric):
 
                     result["min"] = newMin
                     result["history"].append(newMin)
+                    result["clusters"] = clusters
                     clusterSums[prevCluster] = prevCSum
                     clusterSums[clusters[i]] = newCSum
                     betterExists = True
@@ -139,9 +141,6 @@ def bruteForce(data: pd.DataFrame, k, metric):
                 break 
     result["clusters"] = clusters
     return result
-
-def geneticSolution():
-    return
 
 if __name__ == "__main__":
 
@@ -161,9 +160,14 @@ if __name__ == "__main__":
         print("There are string type collumns {} who will be removed ".format(cat_cols))
         data.drop(cat_cols, axis = 1, inplace = True)
 
+    t_time = process_time()
     res = bruteForce(data, k, euclid)
+    t_end = process_time()
 
-    if len(data.columns) > 2:
+    print('Time took to complete algorithm : {}'.format(t_end - t_time))
+    print('Minimal sum : {}'.format(res["min"]))
+
+    if len(data.columns) >= 2:
 
         hist = plt.subplot(1, 2, 1)
         hist.set_xlabel("iteration")
