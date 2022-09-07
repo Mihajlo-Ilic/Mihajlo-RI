@@ -90,7 +90,7 @@ def geneticSolution(data: pd.DataFrame , k, metric):
 
         if result["fitness"] > population[0].fitness:
             result["fitness"] = population[0].fitness
-            result["clusters"] = population[0].clusters
+            result["clusters"] = population[0].clusters.copy()
             result["min"] = population[0].sum
         result["history"].append(population[0].fitness)
 
@@ -135,8 +135,8 @@ if __name__ == "__main__":
     print('Minimal sum : {}'.format(res["min"]))
 
     if len(data.columns) >= 2:
-
         hist = plt.subplot(1, 2, 1)
+        plt.title("GENETIC ALGORITHM")
         hist.set_xlabel("iteration")
         hist.set_ylabel("fitness")
         plt.plot([i for i in range(len(res["history"]))], res["history"])

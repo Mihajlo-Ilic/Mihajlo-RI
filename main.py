@@ -129,7 +129,7 @@ def bruteForce(data: pd.DataFrame, k, metric):
 
                     result["min"] = newMin
                     result["history"].append(newMin)
-                    result["clusters"] = clusters
+                    result["clusters"] = clusters.copy()
                     clusterSums[prevCluster] = prevCSum
                     clusterSums[clusters[i]] = newCSum
                     betterExists = True
@@ -168,11 +168,9 @@ if __name__ == "__main__":
     print('Minimal sum : {}'.format(res["min"]))
 
     if len(data.columns) >= 2:
-
         hist = plt.subplot(1, 2, 1)
         hist.set_xlabel("iteration")
         hist.set_ylabel("min")
-
         plt.plot([i for i in range(len(res["history"]))], res["history"])
 
         plt.subplot(1, 2, 2)
