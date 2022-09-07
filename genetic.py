@@ -9,7 +9,7 @@ import sys
 import matplotlib.pyplot as plt
 
 MAX_RANDOM = 100
-MAX_ITER = 100
+MAX_ITER = 1000
 USE_LOGGING = False
 FLOAT_ROUND = 2
 
@@ -41,16 +41,17 @@ class Unit:
         for cluster in range(self.k):
             points = [i for i,clust in enumerate(self.clusters) if clust == cluster]
             localSum = 0
-            for i in range(len(points)):
-                for j in range(i + 1, len(points)):
-                    localSum = localSum + getDistance(self.distances, i, j)
+            if len(points) > 1:
+                for i in range(len(points)):
+                    for j in range(i + 1, len(points)):
+                        localSum = localSum + getDistance(self.distances, points[i], points[j])
             sum = sum + localSum
         return sum
 
     def __lt__(self,other): 
         return self.fitness < other.fitness
 
-POPULATION_SIZE = 40
+POPULATION_SIZE = 100
 ELITISM_SIZE = POPULATION_SIZE // 5
 SELECTION_SIZE = 15
 MUTATION_CHANCE = 0.1
@@ -88,7 +89,7 @@ def geneticSolution(data: pd.DataFrame , k, metric):
     for iter in range(MAX_ITER):
         population.sort(reverse=True)
 
-        if result["fitness"] > population[0].fitness:
+        if result["fitness"] < population[0].fitness:
             result["fitness"] = population[0].fitness
             result["clusters"] = population[0].clusters.copy()
             result["min"] = population[0].sum
@@ -106,7 +107,11 @@ def geneticSolution(data: pd.DataFrame , k, metric):
             population[i + 1].sum = population[i + 1].calcSum()
             population[i].fitness = 1.0 / (population[i].sum)
             population[i + 1].fitness =  1.0 / (population[i + 1].sum)
-
+    b = Unit(len(data),sums, k, metric)
+    b.clusters = result["clusters"]
+    print("NAJBOLJI")
+    print(b.clusters)
+    print(b.calcSum())
     return result
 
 if __name__ == "__main__":

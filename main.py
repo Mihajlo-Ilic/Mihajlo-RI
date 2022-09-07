@@ -71,7 +71,7 @@ def bruteForce(data: pd.DataFrame, k, metric):
         cluster = [ ind for ind,j in enumerate(clusters) if j == i]
         for ind in range(len(cluster)):
             for j in range(ind + 1, len(cluster)):
-                clusterSums[i] = clusterSums[i] + getDistance(sums, ind, j)
+                clusterSums[i] = clusterSums[i] + getDistance(sums, cluster[ind], cluster[j])
     if USE_LOGGING:
         print("---------CLUSTER LOCAL DISTANCES--------")
         for i in range(len(clusterSums)):

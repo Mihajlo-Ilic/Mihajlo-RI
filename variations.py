@@ -1,7 +1,8 @@
+from datetime import datetime, timedelta
 from itertools import count
 import math
 from os import path
-from time import process_time
+from time import perf_counter, process_time
 import pandas as pd
 import numpy as np
 import sys
@@ -27,9 +28,10 @@ def calcSum(clusters, k, sums):
     for clust in range(k):
         cluster = [ind for ind,val in enumerate(clusters) if val == clust]
         s = 0
-        for i in range(len(cluster)):
-            for j in range(i + 1, len(cluster)):
-                s = s + getDistance(sums, i, j)
+        if len(cluster) > 1:
+            for i in range(len(cluster)):
+                for j in range(i + 1, len(cluster)):
+                    s = s + getDistance(sums, cluster[i], cluster[j])
         sum += s
     return sum
 
@@ -69,10 +71,23 @@ def bruteForce(data: pd.DataFrame, k, metric):
     clusters = [0 for _ in range(len(data))]
     result["clusters"] = clusters
     sums = [[round(metric(data.iloc[i], data.iloc[j]), FLOAT_ROUND) for j in range(i+1, len(data))] for i in range(len(data))]
-     
+    print("---------DISTANCES--------")
+    print(" ", end="")
+    for i in range(len(data)):
+        print("  " + str(i) + " ", end="")
+    print()
+    for i in range(len(sums)):
+        print("{} ".format(i), end="")
+        print(" " * 4 * (i + 1), end="")
+        for j in sums[i]:
+            print("{:.1f} ".format(j), end="")
+        print()
+
     usedClusters = [0 for _ in range(k)]
     usedClusters[0] = clusters.count(0)
 
+    print("SUMA")
+    print(calcSum([0,0,0,1,1,1,2], k, sums))
     while True:
         sum = calcSum(clusters, k, sums)
 
@@ -109,11 +124,11 @@ if __name__ == "__main__":
         print("There are string type collumns {} who will be removed ".format(cat_cols))
         data.drop(cat_cols, axis = 1, inplace = True)
 
-    t_time = process_time()
+    t_time = perf_counter()
     res = bruteForce(data, k, euclid)
-    t_end = process_time()
+    t_end = perf_counter()
 
-    print('Time took to complete algorithm : {}'.format(t_end - t_time))
+    print('Time took to complete algorithm : {}'.format(str(timedelta(seconds = t_end - t_time))))
     print('Minimal sum : {}'.format(res["min"]))
 
     if len(data.columns) >= 2:
