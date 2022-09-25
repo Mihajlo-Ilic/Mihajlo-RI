@@ -4,6 +4,7 @@
 \usepackage{cmsrb}
 \usepackage[T2A]{fontenc} % enable Cyrillic fonts
 \usepackage[serbian]{babel}
+\usepackage{graphicx}
 
 \title{Минимална сума кластеровања у к кластера\\ \small{Семинарски рад на курсу рачунарска интелигенција \\Математички факултет}}
 \author{Михајло Илић}
@@ -27,8 +28,6 @@
 \min \sum_{k}^{K}\sum_{j=1}^{n-1}dist(x_{кj},x_{кj+1})
 \end{displaymath}
 \\К представља скуп кластера, н представља број елемената у к-том кластеру, dist представља метрику за одређивање удаљености два елемента.
-
-\subsection{Pregled literature}
 
 \newpage
 \section{Opis resenja}
@@ -93,9 +92,83 @@ fitness(X) = \frac{1}{\sum_{k}^{K}\sum_{j=1}^{n-1}dist(x_{кj},x_{кj+1})}
  
  \subsubsection{Mutacija}
  За оператор мутације је насумично одабран један елемент из генотипа и додељен другом кластеру.
- Као други оператор мутације одабрана су два кластера узети сви елементи из њих и помешани назад у те кластере.
  
 \section{Eksperimentalni rezultati}
+Као експеримент узет је стандардни скуп са латицама и скуп ruspini за кластер анализу.
+Алгоритам грубе силе већ није у могућности да произведе резултат у нормалном временском интервалу док похлепни алгоритам и генетски успевају да дају исте резултате. 
+
+\newpage
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Табела за скуп са латицама}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r}
+      \textbf{алгоритам} & \textbf{минимална сума} & \textbf{време извршавања}\\
+      \hline
+      груба сила & / & /\\
+      похлепни & 3406 & 3.89\\
+      генетски & 3406 & 93.84\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Табела за скуп руспини}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r}
+      \textbf{алгоритам} & \textbf{минимална сума} & \textbf{време извршавања}\\
+      \hline
+      груба сила & / & /\\
+      похлепни & 10956 & 1.14\\
+      генетски & 10956 & 20.59\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Табела за насумичан скуп}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r}
+      \textbf{алгоритам} & \textbf{минимална сума} & \textbf{време извршавања}\\
+      \hline
+      груба сила & / & /\\
+      похлепни & 2851536 & 562\\
+      генетски & 2850149 & 290\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{genetic_iris.png}\hfill
+    \includegraphics[width=\textwidth]{greedy_iris.png}\hfill
+    \caption{Скуп са латицама}\label{fig:foobar}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{genetic_ruspini.png}
+    \includegraphics[width=\textwidth]{greedy_ruspini.png}
+    \caption{Руспини скуп}\label{fig:foobar}
+\end{figure}
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{genetic_random.png}
+    \includegraphics[width=\textwidth]{greedy_random.png}
+    \caption{Насумичан скуп}\label{fig:foobar}
+\end{figure}
+
+\newpage
+\section{Закључак}
+Похлепни алгоритам се понаша најбоље у односу на друге алгоритме за мале и једноставне улазе.
+Док генетски алгоритам понаша боље за велике и комплексније скупове података.
+Алгоритам грубе силе већ за скупове са стотину инстанци не усепва у разумном року да пронађе минималну суму.
+Такође предност која се очекује од генетског алгоритма у односу похлепни је мања вероватноћа упадања у локални екстремум
+због оператора укрштања и мутације који му пружају могућност истраживања више решења.
+Генетски алгоритам такође може да се унапреди тако што ће се извршити симулирано каљење или на крају рада или на неколико
+најбољих јединки на крају сваке генерације.
+
 
 \addcontentsline{toc}{section}{Literatura}
 \appendix
@@ -108,7 +181,7 @@ fitness(X) = \frac{1}{\sum_{k}^{K}\sum_{j=1}^{n-1}dist(x_{кj},x_{кj+1})}
 \fi
 
 \begin{thebibliography}{Literatura}
-
+Није била пронађена бесплатна литература на ову тему
 \end{thebibliography}
 
 

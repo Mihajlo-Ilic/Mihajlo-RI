@@ -8,7 +8,7 @@ import numpy as np
 import sys
 import matplotlib.pyplot as plt
 
-MAX_RANDOM = 100
+MAX_RANDOM = 300
 MAX_ITER = 1000
 USE_LOGGING = False
 FLOAT_ROUND = 2
@@ -117,7 +117,7 @@ def geneticSolution(data: pd.DataFrame , k, metric):
 if __name__ == "__main__":
 
     data = pd.DataFrame()
-    k = 3
+    k = 4
 
     if len(sys.argv) > 1 and path.exists(sys.argv[1]):
         data = pd.read_csv(sys.argv[1])
